@@ -1,0 +1,48 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] aws_db_instance.pulse-db-rds" [label = "aws_db_instance.pulse-db-rds", shape = "box"]
+		"[root] aws_db_subnet_group.pulse_db_subnet" [label = "aws_db_subnet_group.pulse_db_subnet", shape = "box"]
+		"[root] aws_instance.pulse-app-ec2" [label = "aws_instance.pulse-app-ec2", shape = "box"]
+		"[root] aws_internet_gateway.pulse_gateway" [label = "aws_internet_gateway.pulse_gateway", shape = "box"]
+		"[root] aws_key_pair.pulseKey" [label = "aws_key_pair.pulseKey", shape = "box"]
+		"[root] aws_route_table.pulse_route_public" [label = "aws_route_table.pulse_route_public", shape = "box"]
+		"[root] aws_route_table_association.pulse_sbnt_pblc_ass" [label = "aws_route_table_association.pulse_sbnt_pblc_ass", shape = "box"]
+		"[root] aws_security_group.pulse_sg_ec2" [label = "aws_security_group.pulse_sg_ec2", shape = "box"]
+		"[root] aws_security_group.pulse_sg_rds" [label = "aws_security_group.pulse_sg_rds", shape = "box"]
+		"[root] aws_subnet.pulse-privates-net" [label = "aws_subnet.pulse-privates-net", shape = "box"]
+		"[root] aws_subnet.pulse-public-net" [label = "aws_subnet.pulse-public-net", shape = "box"]
+		"[root] aws_vpc.pulse_vpc" [label = "aws_vpc.pulse_vpc", shape = "box"]
+		"[root] data.aws_availability_zones.available" [label = "data.aws_availability_zones.available", shape = "box"]
+		"[root] provider.aws" [label = "provider.aws", shape = "diamond"]
+		"[root] aws_db_instance.pulse-db-rds" -> "[root] aws_db_subnet_group.pulse_db_subnet"
+		"[root] aws_db_instance.pulse-db-rds" -> "[root] aws_security_group.pulse_sg_rds"
+		"[root] aws_db_subnet_group.pulse_db_subnet" -> "[root] aws_subnet.pulse-privates-net"
+		"[root] aws_instance.pulse-app-ec2" -> "[root] aws_security_group.pulse_sg_ec2"
+		"[root] aws_instance.pulse-app-ec2" -> "[root] aws_subnet.pulse-public-net"
+		"[root] aws_internet_gateway.pulse_gateway" -> "[root] aws_vpc.pulse_vpc"
+		"[root] aws_key_pair.pulseKey" -> "[root] provider.aws"
+		"[root] aws_route_table.pulse_route_public" -> "[root] aws_internet_gateway.pulse_gateway"
+		"[root] aws_route_table_association.pulse_sbnt_pblc_ass" -> "[root] aws_route_table.pulse_route_public"
+		"[root] aws_route_table_association.pulse_sbnt_pblc_ass" -> "[root] aws_subnet.pulse-public-net"
+		"[root] aws_security_group.pulse_sg_ec2" -> "[root] aws_vpc.pulse_vpc"
+		"[root] aws_security_group.pulse_sg_rds" -> "[root] aws_vpc.pulse_vpc"
+		"[root] aws_subnet.pulse-privates-net" -> "[root] aws_vpc.pulse_vpc"
+		"[root] aws_subnet.pulse-privates-net" -> "[root] data.aws_availability_zones.available"
+		"[root] aws_subnet.pulse-public-net" -> "[root] aws_vpc.pulse_vpc"
+		"[root] aws_vpc.pulse_vpc" -> "[root] provider.aws"
+		"[root] data.aws_availability_zones.available" -> "[root] provider.aws"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_db_instance.pulse-db-rds"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_instance.pulse-app-ec2"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_key_pair.pulseKey"
+		"[root] meta.count-boundary (EachMode fixup)" -> "[root] aws_route_table_association.pulse_sbnt_pblc_ass"
+		"[root] provider.aws (close)" -> "[root] aws_db_instance.pulse-db-rds"
+		"[root] provider.aws (close)" -> "[root] aws_instance.pulse-app-ec2"
+		"[root] provider.aws (close)" -> "[root] aws_key_pair.pulseKey"
+		"[root] provider.aws (close)" -> "[root] aws_route_table_association.pulse_sbnt_pblc_ass"
+		"[root] root" -> "[root] meta.count-boundary (EachMode fixup)"
+		"[root] root" -> "[root] provider.aws (close)"
+	}
+}
+
