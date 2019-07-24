@@ -94,7 +94,7 @@ resource "aws_security_group" "pulse_sg_ec2"{
 resource "aws_security_group" "pulse_sg_rds" {
     name    = "pulse_sg_db"
     vpc_id = "${aws_vpc.pulse_vpc.id}"
-    egress {
+    ingress {
         from_port = 3306
         to_port = 3306
         protocol = "tcp"
