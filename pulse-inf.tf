@@ -136,10 +136,21 @@ resource "aws_db_instance" "pulse-db-rds" {
     }
 }
 
+resource "tls_private_key" "pulse_key_pair" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "pulse_generated_key" {
+  key_name   = "pulse_key_test"
+  public_key = "${tls_private_key.pulse_key_pair.public_key_openssh}"
+}
+
 resource "aws_instance" "pulse-app-ec2" {
     ami = "ami-0b898040803850657"
     instance_type   = "t2.micro"
     subnet_id   = "${aws_subnet.pulse-public-net.id}"
+    key_name    = "${aws_key_pair.pulse_generated_key.key_name}"
     vpc_security_group_ids  = ["${aws_security_group.pulse_sg_ec2.id}"]
     tags = {
         env   = "dev"
