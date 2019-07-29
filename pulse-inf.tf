@@ -185,3 +185,13 @@ resource "aws_iam_group_membership" "pulse-api-user-groups" {
     users   = ["${aws_iam_user.pulse-api-user.name}"]
     group   = "${aws_iam_group.pulse-admin-api.name}"
 }
+
+
+resource "aws_s3_bucket" "pulse-layer-libs" {
+  bucket = "pulselayerlambdabucket"
+  acl    = "public-read"
+  tags = {
+    env   = "dev"
+    app   = "pulse"
+  }
+}
